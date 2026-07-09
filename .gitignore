@@ -1,0 +1,9 @@
+.DS_Store
+*.log
+*.swp
+*.swo
+*~
+.nix-result
+result
+result-*
+.antigravitycli
