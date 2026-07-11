@@ -16,3 +16,10 @@ These rules apply to all AI agents working in this project.
 * **Understand the Agentic Era Economy:**
   * The economy of code writing and maintenance is different when working with AI agents. Because writing, refactoring, and maintaining clean code is highly accessible, we can afford to spend the effort to "do the right thing" from the start.
   * Always prioritize the long-term maintainability, clean design, and structural correctness of the codebase.
+
+## 3. Tmux Status Propagation
+* **Update status inside tmux sessions.** When running within a tmux session (indicated by the presence of `$TMUX` and `$TMUX_PANE` environment variables), you can propagate your current action/status to the `tmux-control-panel` TUI.
+* **How to update.** Run the following shell command to set the session's `@status_line` option:
+  `tmux set-option -q -t "$TMUX_PANE" @status_line "Your status message..."`
+* **When to use.** Do this before executing long-running compilation, test suites, or large search operations, so the user gets visual feedback in the control panel.
+
