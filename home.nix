@@ -117,7 +117,7 @@
       colorScheme = "dark";
     };
     context = {
-      AGENTS = ./config/gemini/AGENTS.md;
+      AGENTS = ./config/agents/AGENTS.md;
     };
   };
 
@@ -179,6 +179,7 @@
 
 
   # 3. Manage Config Files (Symlink to existing files in repo)
+  xdg.configFile."agents/AGENTS.md".source = ./config/agents/AGENTS.md;
   xdg.configFile."tmux/tmux.conf".source = ./config/tmux/tmux.conf;
   xdg.configFile."tmux/hx-git.sh".source = ./config/tmux/hx-git.sh;
   xdg.configFile."tmux/tmux-status-hook.sh".source = ./config/tmux/tmux-status-hook.sh;

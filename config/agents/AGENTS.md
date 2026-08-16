@@ -22,4 +22,3 @@ These rules apply to all AI agents working in this project.
 * **How to update.** Run the following shell command to set the session's `@status_line` option:
   `tmux set-option -q -t "$TMUX_PANE" @status_line "Your status message..."`
 * **When to use.** Do this before executing long-running compilation, test suites, or large search operations, so the user gets visual feedback in the control panel.
-
