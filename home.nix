@@ -1,4 +1,4 @@
-{ pkgs, lib, tmux-control-panel, ... }:
+{ pkgs, lib, tmux-control-panel, llm-agents, ... }:
 {
 
   home.username = "michalgr";
@@ -40,6 +40,7 @@
     wget
     zip
     tmux-control-panel.packages.${pkgs.system}.default
+    llm-agents.packages.${pkgs.system}.jules
   ];
 
   home.sessionPath = [
@@ -112,6 +113,7 @@
 
   programs.antigravity-cli = {
     enable = true;
+    package = llm-agents.packages.${pkgs.system}.antigravity-cli;
     settings = {
       toolPermission = "always-proceed";
       colorScheme = "dark";
