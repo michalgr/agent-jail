@@ -26,3 +26,6 @@ These rules apply to all AI agents working in this project.
 ## 4. Language Standards
 * **Write code and comments in English.** Always author code, comments, docstrings, documentation, and commit messages in English—even if the user communicates in another language—unless the repository has explicitly established conventions to the contrary.
 
+## 5. Communicating with Jules
+* **Use the `jules` CLI.** Always use the `jules` command-line tool (installed via `@google/jules`) when interacting with Jules for managing remote tasks, querying status, or delegating sessions.
+
