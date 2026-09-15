@@ -194,4 +194,5 @@ in
   xdg.configFile."nix/nix.conf".source = ./config/nix/nix.conf;
 
   home.file.".gemini/config/hooks.json".source = ./config/gemini/hooks.json;
+  home.file.".gemini/config/skills/jules".source = ./config/gemini/skills/jules;
 }

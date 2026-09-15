@@ -20,7 +20,3 @@ These rules apply to all AI agents working in this project.
 ## 3. Language Standards
 * **Write code and comments in English.** Always author code, comments, docstrings, documentation, and commit messages in English—even if the user communicates in another language—unless the repository has explicitly established conventions to the contrary.
 
-## 4. Communicating with Jules
-* **Communicate via GitHub Issues.** Interact with Jules by creating and managing GitHub Issues using the GitHub CLI (`gh issue ...`).
-* **Triggering Tasks:** Create an issue with clear instructions, scope, and acceptance criteria, and apply the `jules` label to prompt Jules to autonomously pick up the task and generate a pull request.
-
