@@ -18,6 +18,10 @@
       system = "aarch64-linux"; # Matches arm64 Docker on M1/M2/M3 Macs
       pkgs = nixpkgs.legacyPackages.${system};
     in {
+      packages.${system} = {
+        jules-cli = pkgs.callPackage ./config/pkgs/jules.nix { };
+      };
+
       homeConfigurations."michalgr" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];

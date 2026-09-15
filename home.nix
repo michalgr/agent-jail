@@ -1,4 +1,7 @@
 { pkgs, lib, tmux-control-panel, ... }:
+let
+  jules-cli = pkgs.callPackage ./config/pkgs/jules.nix { };
+in
 {
 
   home.username = "michalgr";
@@ -40,6 +43,7 @@
     wget
     zip
     tmux-control-panel.packages.${pkgs.system}.default
+    jules-cli
   ];
 
   home.sessionPath = [
