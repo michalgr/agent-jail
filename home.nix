@@ -1,4 +1,4 @@
-{ pkgs, lib, tmux-control-panel, llm-agents, ... }:
+{ pkgs, lib, tmux-control-panel, ... }:
 {
 
   home.username = "michalgr";
@@ -116,7 +116,6 @@
 
   programs.antigravity-cli = {
     enable = true;
-    package = llm-agents.packages.${pkgs.system}.antigravity-cli;
     settings = {
       toolPermission = "always-proceed";
       colorScheme = "dark";
