@@ -9,11 +9,12 @@ description: >-
 
 This skill guides the agent through delegating development tasks to **Jules**, Google's asynchronous AI coding agent that runs in cloud virtual machines directly on GitHub repositories.
 
-Delegation follows a 4-phase lifecycle:
+Delegation follows a 5-step lifecycle:
 1. **Local Research & Git Sanity**: Rapid local analysis without modifying source code.
-2. **Issue Synthesis & Dispatch**: Formatting a high-context GitHub issue with the `jules` label.
-3. **Async Lifecycle & Non-Blocking Tracking**: Monitoring Jules without burning local context or tokens in busy-wait loops.
-4. **CI & Automated Review**: Inspecting Jules's pull request, checking CI test suites, and presenting a review summary to the user.
+2. **Brainstorming & User Alignment**: Discussing details and trade-offs with the user (unless trivial).
+3. **Plan Artifact Review**: Presenting the issue sketch/plan as an artifact for user approval before filing.
+4. **Issue Dispatch & Async Tracking**: Creating the GitHub issue tagged `jules` and non-blocking monitoring.
+5. **CI & Automated Review**: Inspecting Jules's pull request, checking CI test suites, and presenting a review summary.
 
 --------------------------------------------------------------------------------
 
@@ -35,22 +36,27 @@ Before delegating to Jules, investigate the problem locally using read-only tool
 
 --------------------------------------------------------------------------------
 
-## Phase 2: Issue Synthesis & Dispatch
+## Phase 2: Brainstorming, Plan Artifact & Issue Dispatch
 
-Jules operates in a cloud VM and achieves the highest success rate when given explicit constraints and test commands rather than broad prompts.
+Jules operates in a cloud VM and achieves the highest success rate when given explicit constraints and test commands rather than broad prompts. To ensure Jules receives the best instructions and avoid filing premature GitHub issues:
 
-1. **Format the Issue**:
-   - Follow the template in [references/issue_template.md](./references/issue_template.md).
-   - Structure the issue with:
-     - **Overview**: High-level problem statement.
-     - **Context & Key Locations**: Repository-relative paths (e.g., `src/worker.rs:45-72`).
-     - **Current vs. Expected Behavior**: Concrete breakdown.
-     - **Acceptance Criteria**: Bulleted checklist of required outcomes.
-     - **Verification / Test Command**: Command Jules should execute in its VM.
-     - **Constraints**: Conventions from `AGENTS.md` (e.g., commit rules, language standards).
+1. **Brainstorm with the User (Unless Trivial)**:
+   - For non-trivial tasks (multiple implementation approaches, ambiguous scope, architectural trade-offs, or API design), actively discuss and brainstorm the details with the user first.
+   - Align on the chosen approach, trade-offs, and edge cases before drafting.
+   - For trivial, unambiguous tasks (e.g. self-evident fix with a single obvious solution), brainstorming can be skipped, but the plan artifact must still be presented.
 
-2. **Dispatch via Helper Script or GitHub CLI**:
-   - Use the included script:
+2. **Present the Plan as an Artifact for Review**:
+   - Format the proposed issue following [references/issue_template.md](./references/issue_template.md).
+   - Write the plan/sketch as a user-facing **Artifact** (e.g., `jules_plan.md` in the conversation artifact directory) so the user can review it cleanly:
+     - **Overview & Motivation**
+     - **Target Files & Line Ranges**
+     - **Acceptance Criteria Checklist**
+     - **Verification / Test Commands**
+     - **Constraints & Architectural Rules**
+   - **Obtain User Approval**: Explicitly wait for the user to review and approve the drafted plan artifact before creating the GitHub issue.
+
+3. **Dispatch via Helper Script or GitHub CLI**:
+   - Once the user approves the artifact, dispatch the issue using the included script:
      ```bash
      ./config/gemini/skills/jules/scripts/create_jules_issue.sh \
        --title "Fix: <Concise title>" \
