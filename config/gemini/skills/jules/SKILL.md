@@ -14,7 +14,7 @@ Delegation follows a 5-step lifecycle:
 2. **Brainstorming & User Alignment**: Discussing details and trade-offs with the user (unless trivial).
 3. **Plan Artifact Review**: Presenting the issue sketch/plan as an artifact for user approval before filing.
 4. **Issue Dispatch & Async Tracking**: Creating the GitHub issue tagged `jules` and non-blocking monitoring.
-5. **CI & Automated Review**: Inspecting Jules's pull request, checking CI test suites, and presenting a review summary.
+5. **CI & Automated Review**: Inspecting Jules's pull request, checking CI test suites, and delivering an explicit verdict (Merge As-Is, Request Changes, or Merge with Follow-up Nits).
 
 --------------------------------------------------------------------------------
 
@@ -111,17 +111,35 @@ Once Jules opens a Pull Request:
      gh pr diff <PR_NUMBER>
      ```
    - Evaluate against the original **Acceptance Criteria**:
-     - Did Jules modify the expected files?
+     - Did Jules modify the expected files without unintended side-effects?
      - Are any unexpected files changed or deleted?
      - Did Jules add or update tests?
-     - Did CI pass without warnings?
+     - Did CI pass without errors or warnings?
 
-3. **Present Summary to the User**:
-   - Provide a clean review summary:
-     - PR link and branch name (`jules/...`).
-     - CI status (green / failing checks).
-     - Summary of changes and design assessment.
-     - Checkout command for the user:
+3. **Formulate Explicit Verdict & Merge Recommendation**:
+   Deliver a definitive recommendation with one of three outcomes:
+   - **Merge As-Is**:
+     - *When to use*: All acceptance criteria are satisfied, CI checks pass cleanly, and the design adheres to repository guidelines without regressions.
+     - *Command*:
        ```bash
-       gh pr checkout <PR_NUMBER>
+       gh pr merge <PR_NUMBER> --squash
        ```
+   - **Request Changes (Explicitly State What Is Wrong)**:
+     - *When to use*: Core acceptance criteria failed, tests or CI are failing, logic bugs or regressions were introduced, or architectural/security rules were violated.
+     - *Action*: Explicitly detail what is broken, why it is incorrect, and post or propose a changes-requested review for Jules:
+       ```bash
+       gh pr review <PR_NUMBER> --request-changes --body "<Detailed breakdown of what is wrong and required fixes>"
+       ```
+   - **Merge with Follow-Up Fixes & Nits**:
+     - *When to use*: The primary fix/feature is functionally correct and solid, but minor cosmetic issues, formatting nits, documentation polish, or small refactor opportunities remain.
+     - *Action*: Do not block the PR for minor issues. Recommend merging the PR and explicitly enumerate the suggested nits/follow-up items to address locally or in a subsequent task.
+
+4. **Present Review Summary to the User**:
+   - **PR Overview**: Link, title, and branch name (`jules/...`).
+   - **CI Status**: Pass/fail breakdown of checks.
+   - **Diff Assessment**: Files modified, test coverage added.
+   - **Verdict**: Clearly state **Merge As-Is**, **Request Changes**, or **Merge with Follow-Up Nits**.
+   - **Next Steps & Checkout**:
+     ```bash
+     gh pr checkout <PR_NUMBER>
+     ```
