@@ -9,12 +9,13 @@ description: >-
 
 This skill guides the agent through delegating development tasks to **Jules**, Google's asynchronous AI coding agent that runs in cloud virtual machines directly on GitHub repositories.
 
-Delegation follows a 5-step lifecycle:
+Delegation follows a 6-step lifecycle:
 1. **Local Research & Git Sanity**: Rapid local analysis without modifying source code.
 2. **Brainstorming & User Alignment**: Discussing details and trade-offs with the user (unless trivial).
-3. **Plan Artifact Review**: Presenting the issue sketch/plan as an artifact for user approval before filing.
-4. **Issue Dispatch & Async Tracking**: Creating the GitHub issue tagged `jules` and non-blocking monitoring.
-5. **CI & Automated Review**: Inspecting Jules's pull request, checking CI test suites, and delivering an explicit verdict (Merge As-Is, Request Changes, or Merge with Follow-up Nits).
+3. **Plan Artifact Formulation**: Drafting the issue sketch/plan as an artifact with `RequestFeedback: true`.
+4. **MANDATORY APPROVAL GATE (STOP)**: Yielding the turn immediately and awaiting explicit user approval.
+5. **Issue Dispatch & Async Tracking**: Creating the GitHub issue with `--confirmed` and non-blocking monitoring.
+6. **CI & Automated Review**: Inspecting Jules's pull request, checking CI test suites, and delivering an explicit verdict.
 
 --------------------------------------------------------------------------------
 
@@ -36,43 +37,67 @@ Before delegating to Jules, investigate the problem locally using read-only tool
 
 --------------------------------------------------------------------------------
 
-## Phase 2: Brainstorming, Plan Artifact & Issue Dispatch
+## Phase 2: Brainstorming & Drafting the Plan Artifact
 
-Jules operates in a cloud VM and achieves the highest success rate when given explicit constraints and test commands rather than broad prompts. To ensure Jules receives the best instructions and avoid filing premature GitHub issues:
+Jules operates in a cloud VM and achieves the highest success rate when given explicit constraints and test commands rather than broad prompts.
 
 1. **Brainstorm with the User (Unless Trivial)**:
    - For non-trivial tasks (multiple implementation approaches, ambiguous scope, architectural trade-offs, or API design), actively discuss and brainstorm the details with the user first.
    - Align on the chosen approach, trade-offs, and edge cases before drafting.
    - For trivial, unambiguous tasks (e.g. self-evident fix with a single obvious solution), brainstorming can be skipped, but the plan artifact must still be presented.
 
-2. **Present the Plan as an Artifact for Review**:
+2. **Write the Plan as an Artifact for Review**:
    - Format the proposed issue following [references/issue_template.md](./references/issue_template.md).
-   - Write the plan/sketch as a user-facing **Artifact** (e.g., `jules_plan.md` in the conversation artifact directory) so the user can review it cleanly:
+   - Create a user-facing **Artifact** (e.g., `<appDataDir>/brain/<conversation-id>/jules_plan.md`) via `write_to_file`.
+   - **Crucial**: You MUST provide `ArtifactMetadata` with:
+     ```json
+     {
+       "RequestFeedback": true,
+       "UserFacing": true,
+       "Summary": "Jules delegation plan and draft GitHub issue for review"
+     }
+     ```
+   - Content must include:
      - **Overview & Motivation**
      - **Target Files & Line Ranges**
      - **Acceptance Criteria Checklist**
      - **Verification / Test Commands**
      - **Constraints & Architectural Rules**
-   - **Obtain User Approval**: Explicitly wait for the user to review and approve the drafted plan artifact before creating the GitHub issue.
-
-3. **Dispatch via Helper Script or GitHub CLI**:
-   - Once the user approves the artifact, dispatch the issue using the included script:
-     ```bash
-     ./config/gemini/skills/jules/scripts/create_jules_issue.sh \
-       --title "Fix: <Concise title>" \
-       --body "<Formatted issue content>"
-     ```
-   - Alternatively, directly with `gh`:
-     ```bash
-     gh issue create --title "Fix: <Concise title>" --body "<Formatted issue content>" --label "jules"
-     ```
-   - **Immediately report the outcome to the user**:
-     - Provide the issue number and clickable URL.
-     - Confirm that Jules has been summoned via the `jules` label.
 
 --------------------------------------------------------------------------------
 
-## Phase 3: Async Lifecycle (Non-Blocking)
+## Phase 3: MANDATORY APPROVAL GATE (Hard Stop)
+
+> [!CAUTION]
+> **CRITICAL: NEVER FILE THE ISSUE IN THE SAME TURN AS CREATING THE ARTIFACT.**
+>
+> 1. **Immediate Turn End**: After creating or updating the plan artifact, you MUST STOP calling tools immediately. Output a message pointing the user to the artifact and end your turn.
+> 2. **No Tool Chaining**: You are **STRICTLY FORBIDDEN** from invoking `create_jules_issue.sh`, `gh issue create`, or any command that creates an issue within the same turn that created or edited the artifact.
+> 3. **Wait for Subsequent User Message**: You must wait for the user to explicitly review the artifact and reply in a new turn (e.g., clicking "Proceed", saying "approved", "looks good", or "file it").
+> 4. If the user requests changes, update the artifact and repeat the approval gate.
+
+--------------------------------------------------------------------------------
+
+## Phase 4: Issue Dispatch (Subsequent Turn Only)
+
+**Execute this phase ONLY after receiving explicit user approval in a subsequent message.**
+
+1. **Dispatch via Helper Script**:
+   - Call the helper script with the `--confirmed` flag:
+     ```bash
+     ./config/gemini/skills/jules/scripts/create_jules_issue.sh \
+       --title "Fix: <Concise title>" \
+       --body "<Formatted issue content>" \
+       --confirmed
+     ```
+   - *Note*: `create_jules_issue.sh` will fail if `--confirmed` is omitted.
+2. **Report Dispatch to User**:
+   - Provide the issue number and clickable URL.
+   - Confirm that Jules has been summoned via the `jules` label.
+
+--------------------------------------------------------------------------------
+
+## Phase 5: Async Lifecycle (Non-Blocking)
 
 Jules takes between 5 to 15 minutes to clone, build, attempt fixes, and run tests.
 
@@ -91,7 +116,7 @@ Jules takes between 5 to 15 minutes to clone, build, attempt fixes, and run test
 
 --------------------------------------------------------------------------------
 
-## Phase 4: CI & Automated Code Review
+## Phase 6: CI & Automated Code Review
 
 Once Jules opens a Pull Request:
 

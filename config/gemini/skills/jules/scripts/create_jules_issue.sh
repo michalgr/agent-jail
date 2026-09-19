@@ -14,11 +14,12 @@ Options:
   -b, --body <body>            Issue body markdown content
   -f, --body-file <file>       Path to markdown file with issue body
   -R, --repo <owner/repo>      Target repository (defaults to current git repo)
+  -c, --confirmed              Confirm that the user explicitly approved the plan artifact (required)
   -h, --help                   Show this help message
 
 Examples:
-  $(basename "$0") -t "Fix worker pool memory leak" -f ./issue.md
-  $(basename "$0") -t "Add unit test for parser" -b "Details here..."
+  $(basename "$0") -t "Fix worker pool memory leak" -f ./issue.md --confirmed
+  $(basename "$0") -t "Add unit test for parser" -b "Details here..." --confirmed
 EOF
   exit "$exit_code"
 }
@@ -27,6 +28,7 @@ TITLE=""
 BODY=""
 BODY_FILE=""
 REPO_ARG=""
+CONFIRMED=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -46,6 +48,10 @@ while [[ $# -gt 0 ]]; do
       REPO_ARG="--repo $2"
       shift 2
       ;;
+    -c|--confirmed)
+      CONFIRMED=true
+      shift
+      ;;
     -h|--help)
       usage 0
       ;;
@@ -55,6 +61,11 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [[ "$CONFIRMED" != true ]]; then
+  echo "Error: The --confirmed flag is required. You must obtain explicit user approval on the plan artifact before dispatching this issue to Jules." >&2
+  exit 1
+fi
 
 if [[ -z "$TITLE" ]]; then
   echo "Error: --title is required." >&2
