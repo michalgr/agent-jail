@@ -199,7 +199,6 @@ in
   xdg.configFile."tmux/tmux.conf".source = ./config/tmux/tmux.conf;
   xdg.configFile."tmux/hx-git.sh".source = ./config/tmux/hx-git.sh;
   xdg.configFile."tmux/tmux-status-hook.sh".source = ./config/tmux/tmux-status-hook.sh;
-  xdg.configFile."tmux/ta.sh".source = ./config/tmux/ta.sh;
   xdg.configFile."nix/nix.conf".source = ./config/nix/nix.conf;
 
   home.file.".gemini/config/hooks.json".source = ./config/gemini/hooks.json;
