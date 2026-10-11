@@ -25,7 +25,7 @@ WORKDIR /home/michalgr/
 # 3. Nix Installation (Single-user mode)
 # This layer is independent of config files
 RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
-ENV PATH="/home/michalgr/.nix-profile/bin:/home/michalgr/.local/state/nix/profiles/profile/bin:$PATH"
+ENV PATH="/home/michalgr/.nix-profile/bin:/home/michalgr/.local/bin:/home/michalgr/.local/state/nix/profiles/profile/bin:$PATH"
 
 # 4. Nix Config (Pre-copy to enable Flakes)
 COPY --chown=michalgr:michalgr config/nix/nix.conf /home/michalgr/.config/nix/nix.conf

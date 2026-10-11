@@ -1,6 +1,9 @@
 { pkgs, lib, tmux-control-panel, ... }:
 let
   jules-cli = pkgs.callPackage ./config/pkgs/jules.nix { };
+  ta = pkgs.writeShellScriptBin "ta" (builtins.readFile ./config/tmux/ta.sh);
+  ts = pkgs.writeShellScriptBin "ts" ''exec ta "$@"'';
+  tl = pkgs.writeShellScriptBin "tl" ''exec tmux ls "$@"'';
 in
 {
 
@@ -44,6 +47,9 @@ in
     zip
     tmux-control-panel.packages.${pkgs.system}.default
     jules-cli
+    ta
+    ts
+    tl
   ];
 
   home.sessionPath = [
@@ -117,25 +123,6 @@ in
     initExtra = ''
       # Tool-specific initializations
       [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
-
-      # Attach to an existing tmux session by name or create a new one if it doesn't exist
-      ta() {
-        if [[ -z "$1" ]]; then
-          if [[ -n "$TMUX" ]]; then
-            tmux switch-client -l 2>/dev/null || tmux list-sessions
-          else
-            tmux attach-session 2>/dev/null || tmux new-session
-          fi
-        elif [[ -n "$TMUX" ]]; then
-          local session="$1"
-          tmux has-session -t "$session" 2>/dev/null || tmux new-session -d -s "$session"
-          tmux switch-client -t "$session"
-        else
-          local session="$1"
-          shift
-          tmux new-session -A -s "$session" "$@"
-        fi
-      }
     '';
   };
 
@@ -212,6 +199,7 @@ in
   xdg.configFile."tmux/tmux.conf".source = ./config/tmux/tmux.conf;
   xdg.configFile."tmux/hx-git.sh".source = ./config/tmux/hx-git.sh;
   xdg.configFile."tmux/tmux-status-hook.sh".source = ./config/tmux/tmux-status-hook.sh;
+  xdg.configFile."tmux/ta.sh".source = ./config/tmux/ta.sh;
   xdg.configFile."nix/nix.conf".source = ./config/nix/nix.conf;
 
   home.file.".gemini/config/hooks.json".source = ./config/gemini/hooks.json;
