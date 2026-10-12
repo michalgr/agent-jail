@@ -31,7 +31,7 @@ ENV PATH="/home/michalgr/.nix-profile/bin:/home/michalgr/.local/bin:/home/michal
 COPY --chown=michalgr:michalgr config/nix/nix.conf /home/michalgr/.config/nix/nix.conf
 
 # 5. Home Manager Setup (Heavy Caching Layer)
-COPY --chown=michalgr:michalgr flake.nix home.nix /home/michalgr/.dotfiles/
+COPY --chown=michalgr:michalgr flake.nix flake.lock home.nix /home/michalgr/.dotfiles/
 COPY --chown=michalgr:michalgr config/ /home/michalgr/.dotfiles/config/
 
 RUN cd /home/michalgr/.dotfiles/ \
