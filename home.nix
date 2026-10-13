@@ -1,6 +1,7 @@
 { pkgs, lib, tmux-control-panel, ... }:
 let
   jules-cli = pkgs.callPackage ./config/pkgs/jules.nix { };
+  antigravity-cli = pkgs.callPackage ./config/pkgs/antigravity.nix { };
   ta = pkgs.writeShellScriptBin "ta" (builtins.readFile ./config/tmux/ta.sh);
   ts = pkgs.writeShellScriptBin "ts" ''exec ta "$@"'';
   tl = pkgs.writeShellScriptBin "tl" ''exec tmux ls "$@"'';
@@ -128,6 +129,7 @@ in
 
   programs.antigravity-cli = {
     enable = true;
+    package = antigravity-cli;
     settings = {
       toolPermission = "always-proceed";
       colorScheme = "dark";

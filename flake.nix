@@ -20,6 +20,7 @@
     in {
       packages.${system} = {
         jules-cli = pkgs.callPackage ./config/pkgs/jules.nix { };
+        antigravity-cli = pkgs.callPackage ./config/pkgs/antigravity.nix { };
       };
 
       homeConfigurations."michalgr" = home-manager.lib.homeManagerConfiguration {

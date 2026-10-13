@@ -38,7 +38,7 @@ RUN cd /home/michalgr/.dotfiles/ \
     && git init \
     && git add -A \
     && nix --extra-experimental-features "nix-command flakes" \
-    run github:nix-community/home-manager -- switch --flake .#michalgr \
+    run github:nix-community/home-manager -- switch --flake .#michalgr -b backup \
     && nix-collect-garbage -d \
     && rm -rf $HOME/.cache/nix \
     && rm -rf $HOME/.cache/pip $HOME/.cache/uv
