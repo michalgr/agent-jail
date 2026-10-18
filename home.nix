@@ -1,10 +1,7 @@
-{ pkgs, lib, tmux-control-panel, ... }:
+{ pkgs, lib, tmux-config, ... }:
 let
   jules-cli = pkgs.callPackage ./config/pkgs/jules.nix { };
   antigravity-cli = pkgs.callPackage ./config/pkgs/antigravity.nix { };
-  ta = pkgs.writeShellScriptBin "ta" (builtins.readFile ./config/tmux/ta.sh);
-  ts = pkgs.writeShellScriptBin "ts" ''exec ta "$@"'';
-  tl = pkgs.writeShellScriptBin "tl" ''exec tmux ls "$@"'';
 in
 {
 
@@ -46,14 +43,11 @@ in
     uv
     wget
     zip
-    tmux-control-panel.packages.${pkgs.system}.default
     jules-cli
-    ta
-    ts
-    tl
   ];
 
   home.sessionPath = [
+    "$HOME/.config/tmux/bin"
     "$HOME/.cargo/bin"
     "$HOME/.local/bin"
   ];
@@ -198,11 +192,9 @@ in
 
   # 3. Manage Config Files (Symlink to existing files in repo)
   xdg.configFile."agents/AGENTS.md".source = ./config/agents/AGENTS.md;
-  xdg.configFile."tmux/tmux.conf".source = ./config/tmux/tmux.conf;
-  xdg.configFile."tmux/hx-git.sh".source = ./config/tmux/hx-git.sh;
-  xdg.configFile."tmux/tmux-status-hook.sh".source = ./config/tmux/tmux-status-hook.sh;
+  xdg.configFile."tmux/tmux.conf".source = "${tmux-config}/tmux.conf";
+  xdg.configFile."tmux/bin".source = "${tmux-config}/bin";
   xdg.configFile."nix/nix.conf".source = ./config/nix/nix.conf;
 
-  home.file.".gemini/config/hooks.json".source = ./config/gemini/hooks.json;
   home.file.".gemini/config/skills/jules".source = ./config/gemini/skills/jules;
 }

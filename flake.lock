@@ -40,60 +40,22 @@
       "inputs": {
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "tmux-control-panel": "tmux-control-panel"
+        "tmux-config": "tmux-config"
       }
     },
-    "systems": {
+    "tmux-config": {
+      "flake": false,
       "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "tmux-control-panel": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "utils": "utils"
-      },
-      "locked": {
-        "lastModified": 1783718913,
-        "narHash": "sha256-bdc3X9IudlxZKNEVYFQjaH5zDoAuSYoWCpmUl6d/I64=",
+        "lastModified": 1792259828,
+        "narHash": "sha256-CmfwxSScgpDO3c+MIxTF/ovw/NZKbCU2vrCRS+9A2jg=",
         "owner": "michalgr",
-        "repo": "tmux-control-panel",
-        "rev": "d4b2390ec647cf38c599eb593af53af3252a38a2",
+        "repo": "tmux-config",
+        "rev": "bcfb00333fd4d740490bef3b98e654497e6006d6",
         "type": "github"
       },
       "original": {
         "owner": "michalgr",
-        "repo": "tmux-control-panel",
-        "type": "github"
-      }
-    },
-    "utils": {
-      "inputs": {
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
+        "repo": "tmux-config",
         "type": "github"
       }
     }
