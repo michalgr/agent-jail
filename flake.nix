@@ -11,9 +11,13 @@
       url = "github:michalgr/tmux-config";
       flake = false;
     };
+    agents-config = {
+      url = "github:michalgr/agents-config";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, home-manager, tmux-config, ... }:
+  outputs = { nixpkgs, home-manager, tmux-config, agents-config, ... }:
     let
       system = "aarch64-linux"; # Matches arm64 Docker on M1/M2/M3 Macs
       pkgs = nixpkgs.legacyPackages.${system};
@@ -26,7 +30,7 @@
       homeConfigurations."michalgr" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
-        extraSpecialArgs = { inherit tmux-config; };
+        extraSpecialArgs = { inherit tmux-config agents-config; };
       };
     };
 }

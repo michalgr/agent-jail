@@ -1,4 +1,4 @@
-{ pkgs, lib, tmux-config, ... }:
+{ pkgs, lib, tmux-config, agents-config, ... }:
 let
   jules-cli = pkgs.callPackage ./config/pkgs/jules.nix { };
   antigravity-cli = pkgs.callPackage ./config/pkgs/antigravity.nix { };
@@ -129,7 +129,7 @@ in
       colorScheme = "dark";
     };
     context = {
-      AGENTS = ./config/agents/AGENTS.md;
+      AGENTS = "${agents-config}/AGENTS.md";
     };
   };
 
@@ -191,10 +191,11 @@ in
 
 
   # 3. Manage Config Files (Symlink to existing files in repo)
-  xdg.configFile."agents/AGENTS.md".source = ./config/agents/AGENTS.md;
+  xdg.configFile."agents/AGENTS.md".source = "${agents-config}/AGENTS.md";
+  xdg.configFile."agents/skills".source = "${agents-config}/skills";
   xdg.configFile."tmux/tmux.conf".source = "${tmux-config}/tmux.conf";
   xdg.configFile."tmux/bin".source = "${tmux-config}/bin";
   xdg.configFile."nix/nix.conf".source = ./config/nix/nix.conf;
 
-  home.file.".gemini/config/skills/jules".source = ./config/gemini/skills/jules;
+  home.file.".gemini/config/skills".source = "${agents-config}/skills";
 }

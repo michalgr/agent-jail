@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "agents-config": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792790162,
+        "narHash": "sha256-Gu0s3zO3hudb+UMvLHcQeq9t3IUCwLDkw5oNMFn87sA=",
+        "owner": "michalgr",
+        "repo": "agents-config",
+        "rev": "3cc775fde73f6479a582ae81fbae60077dc3082b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "michalgr",
+        "repo": "agents-config",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -38,6 +54,7 @@
     },
     "root": {
       "inputs": {
+        "agents-config": "agents-config",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "tmux-config": "tmux-config"

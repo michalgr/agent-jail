@@ -5,7 +5,7 @@ Instructions and guidelines for AI agents working in this repository.
 ## Repository Overview & Architecture
 
 * **Purpose:** This repository defines `agent-jail`, an isolated containerized environment (Docker/Podman) used to run autonomous, unrestricted coding agents safely.
-* **Config Source:** All user tool configurations reside under `config/`.
+* **Config Source:** Local container configurations and custom Nix packages reside under `config/`, while shared configurations (`tmux-config`, `agents-config`) are pulled via Nix Flake inputs.
 * **Declarative System:** Nix Flakes (`flake.nix`) and Home Manager (`home.nix`) configure packages and symlink files inside the container.
 * **Containerization:** `Dockerfile` builds the Ubuntu/Nix runtime environment.
 
