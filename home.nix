@@ -129,7 +129,7 @@ in
       colorScheme = "dark";
     };
     context = {
-      AGENTS = "${agents-config}/AGENTS.md";
+      AGENTS = builtins.readFile "${agents-config}/AGENTS.md";
     };
   };
 
@@ -192,10 +192,12 @@ in
 
   # 3. Manage Config Files (Symlink to existing files in repo)
   xdg.configFile."agents/AGENTS.md".source = "${agents-config}/AGENTS.md";
+  xdg.configFile."agents/rules".source = "${agents-config}/rules";
   xdg.configFile."agents/skills".source = "${agents-config}/skills";
   xdg.configFile."tmux/tmux.conf".source = "${tmux-config}/tmux.conf";
   xdg.configFile."tmux/bin".source = "${tmux-config}/bin";
   xdg.configFile."nix/nix.conf".source = ./config/nix/nix.conf;
 
+  home.file.".gemini/rules".source = "${agents-config}/rules";
   home.file.".gemini/config/skills".source = "${agents-config}/skills";
 }

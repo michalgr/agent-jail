@@ -3,11 +3,11 @@
     "agents-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1792790162,
-        "narHash": "sha256-Gu0s3zO3hudb+UMvLHcQeq9t3IUCwLDkw5oNMFn87sA=",
+        "lastModified": 1793053926,
+        "narHash": "sha256-G7/ZhFso7EwgdCIvyadxGTw9E7CUcUYPFmgSqTdA6jE=",
         "owner": "michalgr",
         "repo": "agents-config",
-        "rev": "3cc775fde73f6479a582ae81fbae60077dc3082b",
+        "rev": "037642d9b2799479f86f77e60c8c7030a489574b",
         "type": "github"
       },
       "original": {
